@@ -1,0 +1,32 @@
+version: '3'
+services:
+    postgres:
+        image: 'postgres'
+        environment:
+            - POSTGRES_PASSWORD=postgres_password
+            - POSTGRES_DB=simple_blog_api
+      # Redis database
+    #redis:
+        #image: 'redis'
+      # API Server
+    api:
+        depends_on:
+            #- redis
+            - postgres
+        build: 
+            context: ./
+            #dockerfile: Dockerfile.dev
+            #for prod remove this .dev
+            dockerfile: Dockerfile
+        image: "suryakalatj/simple_blog_api"
+        environment:
+           # - REDIS_HOST=redis
+            #- REDIS_PORT=6379
+            - POSTGRES_HOST=postgres
+            - POSTGRES_PORT=5432
+            - POSTGRES_USERNAME=postgres
+            - POSTGRES_DB=simple_blog_api
+            - POSTGRES_PASSWORD=postgres_password
+        ports: 
+            - '3000:3000'  
+     
